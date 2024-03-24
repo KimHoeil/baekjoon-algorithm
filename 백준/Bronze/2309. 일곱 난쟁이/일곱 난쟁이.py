@@ -1,4 +1,4 @@
-# 일곱 난쟁이 브론즈 1
+# 일곱 난쟁이
 
 import sys
 import copy
@@ -23,6 +23,7 @@ def dfs(start:int, depth:int):
     for i in range(start,9):
         resultArr[depth] = arr[i]
         dfs(i+1, depth+1)
+        resultArr[depth] = 0
     
 dfs(0,0)
 result.sort()
