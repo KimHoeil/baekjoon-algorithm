@@ -1,6 +1,7 @@
 # 아침산책 솔루션
 
 import sys
+sys.setrecursionlimit(10**6)
 
 n = int(sys.stdin.readline())
 
