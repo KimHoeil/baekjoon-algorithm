@@ -77,7 +77,6 @@ while True:
                     copyWaterq.append((nx,ny))
      
      waterq, copyWaterq = copyWaterq, waterq
-     cnt +=1
      if len(sq) ==0: break
 
 if check == False: print('KAKTUS')
