@@ -24,7 +24,6 @@ def bfs():
     else:
           visited[0][0] = True
      
-#     print(virusList) 
 
     while q:
         x,y = q.popleft()
@@ -32,7 +31,6 @@ def bfs():
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
-          #   print(nx,ny)
             
             # 배열의 유효 범위이고, 방문하지 않았고, 바이러스가 존재하면 바이러스큐에 삽입
             if valid(nx,ny) and visited[nx][ny] is False and testTube[nx][ny] !=0:
@@ -46,8 +44,6 @@ def bfs():
                  q.append((nx,ny))
      
 
-
-
 n,k = map(int, sys.stdin.readline().split())
 testTube = []
 virusList = [[] for _ in range(k)]
@@ -60,13 +56,11 @@ for i in range(n):
      v = list(map(int, sys.stdin.readline().split()))
      testTube.append(v)
 
-# print(testTube)
 
 # S초, X행, Y열
 S,X,Y = map(int, sys.stdin.readline().split())
 
 bfs()
-# print(virusList)
 
 for i in range(S):
      for j in range(k):
@@ -81,7 +75,8 @@ for i in range(S):
                          dvy = vy + dy[i]
 
                          if valid(dvx,dvy) and testTube[dvx][dvy] ==0:
-                              testTube[dvx][dvy] = j+1
+                              # 바이러스가 필드에 전염될때는 인덱스번호+1로 처리해줘야한다..(코드 리뷰어가 디버깅해줌)
+                              testTube[dvx][dvy] = j+1 
                               newvirusList[j].append((dvx,dvy))
 
      # 새로 생성한 바이러스 리스트와 기존 바이러스 리스트 swap
