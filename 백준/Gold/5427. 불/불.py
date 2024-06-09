@@ -3,7 +3,7 @@
 import sys
 from collections import deque
 import copy
-# input = sys.stdin.readline
+input = sys.stdin.readline
 
 t = int(input())
 
@@ -16,12 +16,10 @@ def goal(x, y):
     return True
 
 
-def bfs(x, y):
+def bfs(x, y, building, fireq):
     dx = [-1,1,0,0] #상하좌우
     dy = [0,0, -1,1]
     global w,h
-    global building
-    global fireq
     
     dis = [[0 for j in range(w)] for i in range(h)]
 
@@ -72,10 +70,12 @@ def bfs(x, y):
                 if building[nx][ny] == '.':
                     building[nx][ny] = '@'
                     dis[nx][ny] = dis[x][y] + 1
-                    escapeCopyq.append((nx,ny))
 
-        escapeq = copy.deepcopy(escapeCopyq)
-        fireq = copy.deepcopy(fireCopyq)
+                    escapeCopyq.append((nx,ny))
+        escapeq = escapeCopyq
+        fireq = fireCopyq
+        # escapeq = copy.deepcopy(escapeCopyq)
+        # fireq = copy.deepcopy(fireCopyq)
         # if fireFlag == True and moveFlag == False:
         #     print("IMPOSSIBLE")
         #     return
@@ -87,14 +87,13 @@ for _ in range(t):
     
     building = []
     for _ in range(h):
-        building.append(list(map(str, input())))
+        building.append(list(map(str, input().rstrip())))
 
     # for i in building:
     #     print(i)
     
 
     fireq = deque([])
-    visited = [[False for j in range(w)] for i in range(h)]
     sx = 0
     sy = 0
     for i in range(h):
@@ -106,6 +105,5 @@ for _ in range(t):
             if building[i][j] == '*':
                 # print("im fire")
                 fireq.append((i,j))
-                visited[i][j] = True
                 
-    bfs(sx,sy)
+    bfs(sx,sy, building, fireq)
