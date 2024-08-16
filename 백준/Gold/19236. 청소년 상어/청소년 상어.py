@@ -11,25 +11,19 @@ board = [[] for _ in range(4)]
 dx = [0, -1, -1, 0, 1, 1, 1, 0, -1] # 상, 좌상, 좌, 좌하, 하, 우하, 우, 우상
 dy = [0, 0, -1, -1, -1, 0, 1, 1, 1]
 
-fishList = []
 # 배열에 3차원 배열로 물고기 [번호, 방향] 입력받기
 for i in range(4):
     inputList = list(map(int, input().split()))
     fish = []
     for j in range(4):
         fish.append([inputList[j*2], inputList[j*2+1]])
-        fishList.append([inputList[j*2], inputList[j*2+1], i, j]) # [번호, 방향, x좌표, y좌표]
     board[i] = fish 
 
 shark = []
 max_score = 0
 
-def shark_move(board, score, x, y, fishList):
+def shark_move(board, score, x, y):
     global max_score
-    # print("eat ago board")
-    # for i in board:
-    #     print(*i)
-    # print()
 
     # 상어턴 => 물고기 먹고 방향습득
     fish = board[x][y]
@@ -41,28 +35,13 @@ def shark_move(board, score, x, y, fishList):
         return
     
     copy_board = copy.deepcopy(board)
-    copy_fish_list = copy.deepcopy(fishList)
-    # print("board x,y", x, y, board[x][y], fish)
-    # print("shark eat:", x,y, fish[0])
-    # print("current score:", score)
-    # print()
     max_score = max(score, max_score)
 
-    # print("eat later board")
-    # for i in copy_board:
-    #     print(*i)
-    
     # 물고기턴 => fish_move()
     fish_move(copy_board)
 
     # 물고기 이동하고 원래 보드 업데이트해놓음!!
     board = copy.deepcopy(copy_board)
-
-    # print("fishmove later")
-    # for i in copy_board:
-    #     print(*i)
-    # print()
-
 
     # 상어턴 => 3군데중 한군데 조건에 맞으면 이동
     for i in range(3): # 상어는 최대 3곳으로 이동가능
@@ -76,11 +55,9 @@ def shark_move(board, score, x, y, fishList):
         if dy[shark[2]] == 0: ny = shark[1]
 
         if 0 <= nx < 4 and 0 <= ny < 4: # 유효한 공간이면
-            # print("nx,ny" ,nx, ny)
             if copy_board[nx][ny] != [0,0]:        # 빈공간이 아니면
                 copy_board[x][y] = [0,0]           # 상어가 이동하면서 빈공간처리
-                # print("i value", i)
-                shark_move(copy_board, score, nx, ny, copy_fish_list)
+                shark_move(copy_board, score, nx, ny)
                 # dfs 탐색 끝나고, 이전 상태의 보드에서 다시 탐색 시작
                 copy_board = copy.deepcopy(board) 
 
@@ -93,8 +70,6 @@ def fish_move(board):
             for j in range(4):
                 for k in range(4):
                     if board[j][k][0] == l:
-                        # print(j,k)
-                        # print(board[j][k],board[j][k][0], fish[0])
                         nx = j + dx[board[j][k][1]]
                         ny = k + dy[board[j][k][1]]
 
@@ -121,11 +96,5 @@ def fish_move(board):
             if flag2 == True:
                 break
     
-    fishList.clear()
-    for i in range(4):
-        for j in range(4):
-            if board[i][j] != [0,0] and board[i][j] != [-1,-1]:
-                fishList.append([board[i][j][0], board[i][j][1], i, j])
-
-shark_move(board, 0, 0, 0, fishList)
+shark_move(board, 0, 0, 0)
 print(max_score)
