@@ -24,44 +24,40 @@ while q:
 
     start = 0
     end = len(M)-1
-    ans = 0
+    pos = 0
     while start <= end:
         mid = (start+end) // 2
         saro = M[mid]
 
-        if x >= saro:
-            ans =  mid
+        if x >= saro: # 사로위치가 작은경우
+            pos =  mid
             start = mid+1
-        else:
+
+        else: # 사로위치가 큰경우
             end = mid-1
 
-    # print("ans=",ans,M[ans], "x,y=",x,y)
-    # 이분탐색으로 찾은 사로의 바로 왼쪽 사로도 같이확인
-    # 이분탐색의 조건이 크거나 같은 경우이기때문에 더 작은 경우가 x좌표가 더가까울수도 있기 때문
-    if len(M) == 1:
-        dis = abs(M[ans]-x) + y
+    # print("pos=",pos,M[pos], "x,y=",x,y)
+
+    if pos < len(M):
+        dis = abs(M[pos]-x) + y
         if dis <= l:
             cnt +=1
+            continue
+    
+    if pos > 0:
+        dis = abs(M[pos-1]-x) + y
+        if dis <= l:
+            cnt+=1
+            continue
+    
+    if pos +1 < len(M):
+        dis = abs(M[pos+1]-x)+y
+        if dis <= l:
+            cnt+=1
+            continue
 
 
-    elif ans != 0:
-        left = ans -1
-        
-        dis1 = abs(M[ans]-x) + y
-        dis2 = abs(M[left]-x) + y
-        
-        if dis1 <= l:
-            cnt +=1
-        elif dis2 <= l:
-            cnt +=1
-            
-    else:
-        right = ans +1
-        dis1 = abs(M[ans]-x) + y
-        dis2 = abs(M[right]-x) + y
-        if dis1 <= l: # 사정거리안에 들어오면
-            cnt +=1
-        elif dis2 <= l:
-            cnt +=1
+
+
 
 print(cnt)
