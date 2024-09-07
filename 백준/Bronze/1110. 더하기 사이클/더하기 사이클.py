@@ -1,14 +1,28 @@
-n = input()
-if len(n) == 1:  # n이 한자릿수 라면 앞에 0을 붙인다
-    n = '0' + n
+# https://www.acmicpc.net/problem/1110
 
-cnt = 0 # 횟수를 세는 변수
-num = n
-while True:
-    num = num[1] + str(int(num[0]) + int(num[1]))[-1]  # 새로운 수 제작
-    cnt += 1  # 제작할 때마다 카운트 + 1
+import sys
+input = sys.stdin.readline
 
-    if num == n:  # n과 같아지면 break
-        break
+n = int(input())
 
+cnt = 1
+def add_cycle(num):
+    global cnt 
+
+    if num < 10:
+        add_num = num
+    else:
+        left = str(num)[0]
+        right = str(num)[1]
+        add_num = int(left) + int(right)
+    
+    new_num = str(num)[-1] + str(add_num)[-1]
+
+    if int(new_num) == int(n):
+        return
+    else:
+        add_cycle(int(new_num))
+        cnt = cnt+1
+
+add_cycle(n)
 print(cnt)
