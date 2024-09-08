@@ -1,26 +1,35 @@
-# https://www.acmicpc.net/problem/1182
+# 부분 수열의 합_실버2_백트래킹
 
 import sys
-input = sys.stdin.readline
+import copy
 
-n,s = map(int, input().split())
-sequence = list(map(int, input().split()))
+n, s = map(int, sys.stdin.readline().split())
+arr = []
+visited = [False] * n
 
-sum = 0
+num = list(map(int, sys.stdin.readline().split()))
+arr = copy.deepcopy(num)
 cnt = 0
-def dfs (depth, start):
-    global sum 
-    global cnt
+arr.sort()
+isFirst = False
 
+def dfs(sum:int, depth:int)->int:
+
+    global cnt
+    global s
+    global isFirst
+    
+    if sum == s and isFirst==True:
+        cnt +=1
+        
     if depth == n:
         return
     
-    for i in range(start, n):
-        sum += sequence[i]
-        if sum == s:
-            cnt +=1
-        dfs(depth+1, i+1)
-        sum -= sequence[i]
+    isFirst = True
+    for i in range(depth,n):
+        sum += arr[i]
+        dfs(sum, i+1)
+        sum -= arr[i]
 
 dfs(0,0)
 print(cnt)
